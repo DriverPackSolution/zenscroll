@@ -300,53 +300,53 @@
 
 		}, false)
 
-		// Handling clicks on anchors
-		var RE_noZensmooth = new RegExp("(^|\\s)noZensmooth(\\s|$)")
-		window.addEventListener("click", function (event) {
-			var anchor = event.target
-			while (anchor && anchor.tagName !== "A") {
-				anchor = anchor.parentNode
-			}
-			// Let the browser handle the click if it wasn't with the primary button, or with some modifier keys:
-			if (!anchor || event.which !== 1 || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) {
-				return
-			}
-			// Save the current scrolling position so it can be used for scroll restoration:
-			if (isScrollRestorationSupported) {
-				var historyState = history.state && typeof history.state === "object" ? history.state : {}
-				historyState.zenscrollY = zenscroll.getY()
-				try {
-					history.replaceState(historyState, "")
-				} catch (e) {
-					// Avoid the Chrome Security exception on file protocol, e.g., file://index.html
-				}
-			}
-			// Find the referenced ID:
-			var href = anchor.getAttribute("href") || ""
-			if (href.indexOf("#") === 0 && !RE_noZensmooth.test(anchor.className)) {
-				var targetY = 0
-				var targetElem = document.getElementById(href.substring(1))
-				if (href !== "#") {
-					if (!targetElem) {
-						// Let the browser handle the click if the target ID is not found.
-						return
-					}
-					targetY = zenscroll.getTopOf(targetElem)
-				}
-				event.preventDefault()
-				// By default trigger the browser's `hashchange` event...
-				var onDone = function () { window.location = href }
-				// ...unless there is an edge offset specified
-				var edgeOffset = zenscroll.setup().edgeOffset
-				if (edgeOffset) {
-					targetY = Math.max(0, targetY - edgeOffset)
-					if (isHistorySupported) {
-						onDone = function () { history.pushState({}, "", href) }
-					}
-				}
-				zenscroll.toY(targetY, null, onDone)
-			}
-		}, false)
+		// // Handling clicks on anchors
+		// var RE_noZensmooth = new RegExp("(^|\\s)noZensmooth(\\s|$)")
+		// window.addEventListener("click", function (event) {
+		// 	var anchor = event.target
+		// 	while (anchor && anchor.tagName !== "A") {
+		// 		anchor = anchor.parentNode
+		// 	}
+		// 	// Let the browser handle the click if it wasn't with the primary button, or with some modifier keys:
+		// 	if (!anchor || event.which !== 1 || event.shiftKey || event.metaKey || event.ctrlKey || event.altKey) {
+		// 		return
+		// 	}
+		// 	// Save the current scrolling position so it can be used for scroll restoration:
+		// 	if (isScrollRestorationSupported) {
+		// 		var historyState = history.state && typeof history.state === "object" ? history.state : {}
+		// 		historyState.zenscrollY = zenscroll.getY()
+		// 		try {
+		// 			history.replaceState(historyState, "")
+		// 		} catch (e) {
+		// 			// Avoid the Chrome Security exception on file protocol, e.g., file://index.html
+		// 		}
+		// 	}
+		// 	// Find the referenced ID:
+		// 	var href = anchor.getAttribute("href") || ""
+		// 	if (href.indexOf("#") === 0 && !RE_noZensmooth.test(anchor.className)) {
+		// 		var targetY = 0
+		// 		var targetElem = document.getElementById(href.substring(1))
+		// 		if (href !== "#") {
+		// 			if (!targetElem) {
+		// 				// Let the browser handle the click if the target ID is not found.
+		// 				return
+		// 			}
+		// 			targetY = zenscroll.getTopOf(targetElem)
+		// 		}
+		// 		event.preventDefault()
+		// 		// By default trigger the browser's `hashchange` event...
+		// 		var onDone = function () { window.location = href }
+		// 		// ...unless there is an edge offset specified
+		// 		var edgeOffset = zenscroll.setup().edgeOffset
+		// 		if (edgeOffset) {
+		// 			targetY = Math.max(0, targetY - edgeOffset)
+		// 			if (isHistorySupported) {
+		// 				onDone = function () { history.pushState({}, "", href) }
+		// 			}
+		// 		}
+		// 		zenscroll.toY(targetY, null, onDone)
+		// 	}
+		// }, false)
 
 	}
 
